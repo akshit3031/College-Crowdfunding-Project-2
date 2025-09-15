@@ -1,0 +1,27 @@
+{
+  "name": "client",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "yarn build && npx thirdweb@3.7.4 upload dist"
+  },
+  "dependencies": {
+    "@thirdweb-dev/contracts-js": "^1.3.23",
+    "@thirdweb-dev/react": "^4.9.4",
+    "@thirdweb-dev/sdk": "^4.0.99",
+    "ethers": "^5.8.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^2",
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.19",
+    "tailwindcss": "^3.2.4",
+    "vite": "^3"
+  }
+}
