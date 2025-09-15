@@ -1,69 +1,180 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.9;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.26;
 
-contract CrowdFunding {
-    struct Campaign {
-        address owner;
-        string title;
+contract CollegeCampaignFactory {
+    address public admin;
+    address[] public deployedCampaigns;
+    mapping(address => bool) public teachers;
+
+    constructor() {
+        admin = msg.sender; // admin can add teachers
+    }
+
+    modifier onlyAdmin() {
+        require(msg.sender == admin, "Only admin can call this");
+        _;
+    }
+
+    // Add a teacher
+    function addTeacher(address _teacher) external onlyAdmin {
+        teachers[_teacher] = true;
+    }
+
+    // Remove a teacher
+    function removeTeacher(address _teacher) external onlyAdmin {
+        teachers[_teacher] = false;
+    }
+
+    // Create a new student campaign
+    function createCampaign(
+        uint minimumContribution,
+        string memory title,
+        string memory description,
+        string memory image,
+        uint targetAmount,
+        string memory studentRoll
+    ) external {
+        CollegeCampaign newCampaign = new CollegeCampaign(
+            minimumContribution,
+            msg.sender,
+            title,
+            description,
+            image,
+            targetAmount,
+            studentRoll,
+            address(this) // pass factory address for teacher checks
+        );
+        deployedCampaigns.push(address(newCampaign));
+    }
+
+    function getDeployedCampaigns() external view returns (address[] memory) {
+        return deployedCampaigns;
+    }
+}
+
+contract CollegeCampaign {
+    struct WithdrawalRequest {
         string description;
-        uint256 target;
-        uint256 deadline;
-        uint256 amountCollected;
-        string image;
-        address[] donators;
-        uint256[] donations;
+        uint value;
+        address recipient;
+        bool completed;
+        uint approvalCount;
+        mapping(address => bool) approvals;
     }
 
-    mapping(uint256 => Campaign) public campaigns;
+    CollegeCampaignFactory public factory; // factory address
+    address public student;
+    string public studentRollNumber;
+    string public title;
+    string public description;
+    string public imageUrl;
+    uint public targetAmount;
+    uint public minimumContribution;
 
-    uint256 public numberOfCampaigns = 0;
+    mapping(address => bool) public contributors;
+    uint public contributorsCount;
 
-    function createCampaign(address _owner, string memory _title, string memory _description, uint256 _target, uint256 _deadline, string memory _image) public returns (uint256) {
-        Campaign storage campaign = campaigns[numberOfCampaigns];
+    WithdrawalRequest[] public requests;
 
-        require(campaign.deadline < block.timestamp, "The deadline should be a date in the future.");
-
-        campaign.owner = _owner;
-        campaign.title = _title;
-        campaign.description = _description;
-        campaign.target = _target;
-        campaign.deadline = _deadline;
-        campaign.amountCollected = 0;
-        campaign.image = _image;
-
-        numberOfCampaigns++;
-
-        return numberOfCampaigns - 1;
+    modifier onlyStudent() {
+        require(msg.sender == student, "Only student can call this");
+        _;
     }
 
-    function donateToCampaign(uint256 _id) public payable {
-        uint256 amount = msg.value;
+    modifier onlyTeacher() {
+        require(factory.teachers(msg.sender), "Only teacher can call this");
+        _;
+    }
 
-        Campaign storage campaign = campaigns[_id];
+    constructor(
+        uint _minimum,
+        address _student,
+        string memory _title,
+        string memory _description,
+        string memory _image,
+        uint _target,
+        string memory _roll,
+        address factoryAddress
+    ) {
+        minimumContribution = _minimum;
+        student = _student;
+        title = _title;
+        description = _description;
+        imageUrl = _image;
+        targetAmount = _target;
+        studentRollNumber = _roll;
+        factory = CollegeCampaignFactory(factoryAddress);
+    }
 
-        campaign.donators.push(msg.sender);
-        campaign.donations.push(amount);
+    // Anyone can contribute
+    function contribute() external payable {
+        require(msg.value >= minimumContribution, "Contribution too small");
 
-        (bool sent,) = payable(campaign.owner).call{value: amount}("");
-
-        if(sent) {
-            campaign.amountCollected = campaign.amountCollected + amount;
+        if (!contributors[msg.sender]) {
+            contributors[msg.sender] = true;
+            contributorsCount++;
         }
     }
 
-    function getDonators(uint256 _id) view public returns (address[] memory, uint256[] memory) {
-        return (campaigns[_id].donators, campaigns[_id].donations);
+    // Student creates withdrawal request
+    function createWithdrawalRequest(string memory _description, uint _value, address _recipient) external onlyStudent {
+        require(_value <= address(this).balance, "Insufficient funds");
+        WithdrawalRequest storage newRequest = requests.push();
+        newRequest.description = _description;
+        newRequest.value = _value;
+        newRequest.recipient = _recipient;
+        newRequest.completed = false;
+        newRequest.approvalCount = 0;
     }
 
-    function getCampaigns() public view returns (Campaign[] memory) {
-        Campaign[] memory allCampaigns = new Campaign[](numberOfCampaigns);
+    // Teacher approves a request
+    function approveRequest(uint index) external onlyTeacher {
+        WithdrawalRequest storage request = requests[index];
+        require(!request.approvals[msg.sender], "Already approved");
 
-        for(uint i = 0; i < numberOfCampaigns; i++) {
-            Campaign storage item = campaigns[i];
+        request.approvals[msg.sender] = true;
+        request.approvalCount++;
+    }
 
-            allCampaigns[i] = item;
-        }
+    // Student finalizes request once enough teachers approve
+    function finalizeRequest(uint index) external onlyStudent {
+        WithdrawalRequest storage request = requests[index];
+        require(!request.completed, "Request already completed");
+        require(request.approvalCount > 0, "Need at least one teacher approval"); // or any threshold you want
 
-        return allCampaigns;
+        payable(request.recipient).transfer(request.value);
+        request.completed = true;
+    }
+
+    // View number of requests
+    function getRequestsCount() external view returns (uint) {
+        return requests.length;
+    }
+
+    // Get campaign summary
+    function getSummary()
+        external
+        view
+        returns (
+            uint,
+            uint,
+            uint,
+            address,
+            string memory,
+            string memory,
+            string memory,
+            uint
+        )
+    {
+        return (
+            minimumContribution,
+            address(this).balance,
+            requests.length,
+            student,
+            title,
+            description,
+            imageUrl,
+            targetAmount
+        );
     }
 }

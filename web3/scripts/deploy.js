@@ -1,19 +1,25 @@
 const hre = require("hardhat");
 
 async function main() {
-  // Get the contract factory
-  const CrowdFunding = await hre.ethers.getContractFactory("CrowdFunding");
+  // 1. Get the contract factory for CollegeCampaignFactory
+  const CollegeCampaignFactory = await hre.ethers.getContractFactory("CollegeCampaignFactory");
 
-  // Deploy contract
-  const crowdFunding = await CrowdFunding.deploy();
+  // 2. Deploy the factory contract
+  const factory = await CollegeCampaignFactory.deploy();
 
-  // Wait for deployment
-  await crowdFunding.deployed();
+  // 3. Wait for deployment to be mined
+  await factory.deployed();
 
-  console.log(`CrowdFunding deployed to: ${crowdFunding.address}`);
+  console.log(`CollegeCampaignFactory deployed to: ${factory.address}`);
+  
+  // Optional: add a teacher immediately after deployment
+  // const [admin, teacher] = await hre.ethers.getSigners();
+  // const tx = await factory.addTeacher(teacher.address);
+  // await tx.wait();
+  // console.log(`Teacher added: ${teacher.address}`);
 }
 
-// Run script
+// Run the script and catch errors
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;

@@ -1,118 +1,149 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { ethers } from 'ethers';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { useStateContext } from '../context';
-import { money } from '../assets';
-import { CustomButton, FormField, Loader } from '../components';
-import { checkIfImage } from '../utils';
+import { useStateContext } from "../context";
+import { money } from "../assets";
+import { CustomButton, FormField, Loader } from "../components";
+import { checkIfImage } from "../utils";
 
 const CreateCampaign = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const { createCampaign } = useStateContext();
+
   const [form, setForm] = useState({
-    name: '',
-    title: '',
-    description: '',
-    target: '', 
-    deadline: '',
-    image: ''
-  });
+  student: "",
+  studentRoll: "",
+  title: "",
+  description: "",
+  minimumContribution: "", // <-- added
+  targetAmount: "",
+  image: "",
+});
+
 
   const handleFormFieldChange = (fieldName, e) => {
-    setForm({ ...form, [fieldName]: e.target.value })
-  }
+    setForm({ ...form, [fieldName]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    checkIfImage(form.image, async (exists) => {
-      if(exists) {
-        setIsLoading(true)
-        await createCampaign({ ...form, target: ethers.utils.parseUnits(form.target, 18)})
-        setIsLoading(false);
-        navigate('/');
-      } else {
-        alert('Provide valid image URL')
-        setForm({ ...form, image: '' });
+    // Validate all required fields
+    const { student, studentRoll, title, description, targetAmount, image } = form;
+    if (!student || !studentRoll || !title || !description || !targetAmount || !image) {
+      alert("Please fill all required fields");
+      return;
+    }
+
+    // Validate image URL
+    checkIfImage(image, async (exists) => {
+      if (!exists) {
+        alert("Provide a valid image URL");
+        setForm({ ...form, image: "" });
+        return;
       }
-    })
-  }
+
+      setIsLoading(true);
+      try {
+        await createCampaign({
+          student,
+          studentRoll,
+          title,
+          description,
+          image,
+          targetAmount: targetAmount.toString(), // ensure string for parseEther
+           minimumContribution: form.minimumContribution.toString(), // <-- added
+        });
+        navigate("/");
+      } catch (err) {
+        console.error("Campaign creation failed:", err);
+        alert("Failed to create campaign. Check console for details.");
+      } finally {
+        setIsLoading(false);
+      }
+    });
+  };
 
   return (
-    <div className="bg-[#1c1c24] flex justify-center items-center flex-col rounded-[10px] sm:p-10 p-4">
+    <div className="bg-[#1c1c24] flex justify-center items-start flex-col rounded-[10px] p-4 w-[95vw] min-h-[calc(100vh-64px)] mt-[64px] overflow-y-auto">
       {isLoading && <Loader />}
       <div className="flex justify-center items-center p-[16px] sm:min-w-[380px] bg-[#3a3a43] rounded-[10px]">
-        <h1 className="font-epilogue font-bold sm:text-[25px] text-[18px] leading-[38px] text-white">Start a Campaign</h1>
+        <h1 className="font-epilogue font-bold sm:text-[25px] text-[18px] text-white">
+          Start a College Campaign
+        </h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="w-full mt-[65px] flex flex-col gap-[30px]">
-        <div className="flex flex-wrap gap-[40px]">
-          <FormField 
-            labelName="Your Name *"
+      <form onSubmit={handleSubmit} className="w-full mt-[30px] flex flex-col gap-[25px]">
+        <div className="flex flex-wrap gap-[20px]">
+          <FormField
+            labelName="Student Name *"
             placeholder="John Doe"
             inputType="text"
-            value={form.name}
-            handleChange={(e) => handleFormFieldChange('name', e)}
+            value={form.student}
+            handleChange={(e) => handleFormFieldChange("student", e)}
           />
-          <FormField 
-            labelName="Campaign Title *"
-            placeholder="Write a title"
+          <FormField
+            labelName="Roll Number *"
+            placeholder="123456"
             inputType="text"
-            value={form.title}
-            handleChange={(e) => handleFormFieldChange('title', e)}
+            value={form.studentRoll}
+            handleChange={(e) => handleFormFieldChange("studentRoll", e)}
           />
         </div>
 
-        <FormField 
-            labelName="Story *"
-            placeholder="Write your story"
-            isTextArea
-            value={form.description}
-            handleChange={(e) => handleFormFieldChange('description', e)}
-          />
+        <FormField
+          labelName="Campaign Title *"
+          placeholder="Write a title"
+          inputType="text"
+          value={form.title}
+          handleChange={(e) => handleFormFieldChange("title", e)}
+        />
 
-        <div className="w-full flex justify-start items-center p-4 bg-[#8c6dfd] h-[120px] rounded-[10px]">
-          <img src={money} alt="money" className="w-[40px] h-[40px] object-contain"/>
-          <h4 className="font-epilogue font-bold text-[25px] text-white ml-[20px]">You will get 100% of the raised amount</h4>
+        <FormField
+          labelName="Story *"
+          placeholder="Write your story"
+          isTextArea
+          value={form.description}
+          handleChange={(e) => handleFormFieldChange("description", e)}
+        />
+
+        <div className="w-full flex justify-start items-center p-2 sm:p-3 bg-[#8c6dfd] h-[80px] rounded-[10px]">
+          <img src={money} alt="money" className="w-[30px] h-[30px] sm:w-[35px] sm:h-[35px] object-contain" />
+          <h4 className="font-epilogue font-bold text-[18px] sm:text-[20px] text-white ml-[15px]">
+            You will get 100% of the raised amount
+          </h4>
         </div>
+      <FormField
+  labelName="Minimum Contribution (ETH) *"
+  placeholder="0.01"
+  inputType="text"
+  value={form.minimumContribution}
+  handleChange={(e) => handleFormFieldChange("minimumContribution", e)}
+/>
 
-        <div className="flex flex-wrap gap-[40px]">
-          <FormField 
-            labelName="Goal *"
-            placeholder="ETH 0.50"
-            inputType="text"
-            value={form.target}
-            handleChange={(e) => handleFormFieldChange('target', e)}
-          />
-          <FormField 
-            labelName="End Date *"
-            placeholder="End Date"
-            inputType="date"
-            value={form.deadline}
-            handleChange={(e) => handleFormFieldChange('deadline', e)}
-          />
+        <FormField
+          labelName="Goal (ETH) *"
+          placeholder="0.5"
+          inputType="text"
+          value={form.targetAmount}
+          handleChange={(e) => handleFormFieldChange("targetAmount", e)}
+        />
+
+        <FormField
+          labelName="Campaign Image *"
+          placeholder="Place image URL of your campaign"
+          inputType="url"
+          value={form.image}
+          handleChange={(e) => handleFormFieldChange("image", e)}
+        />
+
+        <div className="flex justify-center items-center mt-[30px]">
+          <CustomButton btnType="submit" title="Submit new campaign" styles="bg-[#1dc071]" />
         </div>
-
-        <FormField 
-            labelName="Campaign image *"
-            placeholder="Place image URL of your campaign"
-            inputType="url"
-            value={form.image}
-            handleChange={(e) => handleFormFieldChange('image', e)}
-          />
-
-          <div className="flex justify-center items-center mt-[40px]">
-            <CustomButton 
-              btnType="submit"
-              title="Submit new campaign"
-              styles="bg-[#1dc071]"
-            />
-          </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default CreateCampaign
+export default CreateCampaign;
