@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.26;
+pragma solidity ^0.8.19;
 
 contract CollegeCampaignFactory {
     address public admin;
@@ -25,7 +25,7 @@ contract CollegeCampaignFactory {
         teachers[_teacher] = false;
     }
 
-    // Create a new student campaign
+    // Create a new student campaign using new keyword (avoiding import)
     function createCampaign(
         uint minimumContribution,
         string memory title,
@@ -34,6 +34,7 @@ contract CollegeCampaignFactory {
         uint targetAmount,
         string memory studentRoll
     ) external {
+        // Deploy new campaign contract without importing
         CollegeCampaign newCampaign = new CollegeCampaign(
             minimumContribution,
             msg.sender,
@@ -42,7 +43,7 @@ contract CollegeCampaignFactory {
             image,
             targetAmount,
             studentRoll,
-            address(this) // pass factory address for teacher checks
+            address(this)
         );
         deployedCampaigns.push(address(newCampaign));
     }
@@ -52,6 +53,7 @@ contract CollegeCampaignFactory {
     }
 }
 
+// Define the CollegeCampaign contract in the same file to avoid circular imports
 contract CollegeCampaign {
     struct WithdrawalRequest {
         string description;
@@ -59,10 +61,8 @@ contract CollegeCampaign {
         address recipient;
         bool completed;
         uint approvalCount;
-        mapping(address => bool) approvals;
     }
 
-    CollegeCampaignFactory public factory; // factory address
     address public student;
     string public studentRollNumber;
     string public title;
@@ -70,11 +70,14 @@ contract CollegeCampaign {
     string public imageUrl;
     uint public targetAmount;
     uint public minimumContribution;
+    address public factory;
 
     mapping(address => bool) public contributors;
     uint public contributorsCount;
 
     WithdrawalRequest[] public requests;
+    // mapping: request index => teacher address => approved
+    mapping(uint => mapping(address => bool)) public approvals;
 
     modifier onlyStudent() {
         require(msg.sender == student, "Only student can call this");
@@ -82,7 +85,11 @@ contract CollegeCampaign {
     }
 
     modifier onlyTeacher() {
-        require(factory.teachers(msg.sender), "Only teacher can call this");
+        // Use interface call to factory to check if sender is teacher
+        (bool success, bytes memory data) = factory.staticcall(
+            abi.encodeWithSignature("teachers(address)", msg.sender)
+        );
+        require(success && abi.decode(data, (bool)), "Only teacher can call this");
         _;
     }
 
@@ -103,7 +110,7 @@ contract CollegeCampaign {
         imageUrl = _image;
         targetAmount = _target;
         studentRollNumber = _roll;
-        factory = CollegeCampaignFactory(factoryAddress);
+        factory = factoryAddress;
     }
 
     // Anyone can contribute
@@ -119,20 +126,21 @@ contract CollegeCampaign {
     // Student creates withdrawal request
     function createWithdrawalRequest(string memory _description, uint _value, address _recipient) external onlyStudent {
         require(_value <= address(this).balance, "Insufficient funds");
-        WithdrawalRequest storage newRequest = requests.push();
-        newRequest.description = _description;
-        newRequest.value = _value;
-        newRequest.recipient = _recipient;
-        newRequest.completed = false;
-        newRequest.approvalCount = 0;
+        requests.push(WithdrawalRequest({
+            description: _description,
+            value: _value,
+            recipient: _recipient,
+            completed: false,
+            approvalCount: 0
+        }));
     }
 
     // Teacher approves a request
     function approveRequest(uint index) external onlyTeacher {
         WithdrawalRequest storage request = requests[index];
-        require(!request.approvals[msg.sender], "Already approved");
+        require(!approvals[index][msg.sender], "Already approved");
 
-        request.approvals[msg.sender] = true;
+        approvals[index][msg.sender] = true;
         request.approvalCount++;
     }
 
@@ -140,7 +148,7 @@ contract CollegeCampaign {
     function finalizeRequest(uint index) external onlyStudent {
         WithdrawalRequest storage request = requests[index];
         require(!request.completed, "Request already completed");
-        require(request.approvalCount > 0, "Need at least one teacher approval"); // or any threshold you want
+        require(request.approvalCount > 0, "Need at least one teacher approval");
 
         payable(request.recipient).transfer(request.value);
         request.completed = true;
