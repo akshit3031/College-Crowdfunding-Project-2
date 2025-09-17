@@ -66,7 +66,7 @@ const CreateCampaign = () => {
   };
 
   return (
-    <div className="bg-[#1c1c24] flex justify-center items-start flex-col rounded-[10px] p-4 w-[95vw] min-h-[calc(100vh-64px)] mt-[64px] overflow-y-auto">
+    <div className="bg-[#1c1c24] flex justify-center  items-start flex-col rounded-[10px] p-4 w-[70vw] min-h-[calc(100vh-64px)] mt-[64px] overflow-y-auto">
       {isLoading && <Loader />}
       <div className="flex justify-center items-center p-[16px] sm:min-w-[380px] bg-[#3a3a43] rounded-[10px]">
         <h1 className="font-epilogue font-bold sm:text-[25px] text-[18px] text-white">

@@ -14,7 +14,7 @@ const CampaignDetails = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [amount, setAmount] = useState('');
-  const [donators, setDonators] = useState([]);
+  const [contributorsCount, setContributorsCount] = useState(0);
 
   const campaignContract = new ethers.Contract(
     state.address,
@@ -22,21 +22,17 @@ const CampaignDetails = () => {
     signer
   );
 
-  const fetchDonators = async () => {
+  const fetchContributorsCount = async () => {
     try {
-      const donations = await campaignContract.getDonators();
-      const parsedDonations = donations[0].map((donator, i) => ({
-        donator,
-        donation: ethers.utils.formatEther(donations[1][i].toString()),
-      }));
-      setDonators(parsedDonations);
+      const count = await campaignContract.contributorsCount();
+      setContributorsCount(count.toNumber());
     } catch (error) {
-      console.error('Failed to fetch donators:', error);
+      console.error('Failed to fetch contributors count:', error);
     }
   };
 
   useEffect(() => {
-    if (campaignContract) fetchDonators();
+    if (campaignContract) fetchContributorsCount();
   }, [campaignContract, address]);
 
   const handleDonate = async () => {
@@ -53,7 +49,7 @@ const CampaignDetails = () => {
         value: ethers.utils.parseEther(amount.toString()),
       });
       await tx.wait();
-      await fetchDonators();
+      await fetchContributorsCount();
       navigate('/');
     } catch (error) {
       console.error('Donation failed:', error);
@@ -91,14 +87,14 @@ const CampaignDetails = () => {
             title={`Raised of ${state.targetAmount} ETH`}
             value={`${state.balance} ETH`}
           />
-          <CountBox title="Total Backers" value={donators.length} />
+          <CountBox title="Total Backers" value={contributorsCount} />
           <CountBox title="Min Contribution" value={`${state.minimumContribution} ETH`} />
         </div>
       </div>
 
       {/* Campaign details and donation */}
       <div className="mt-[60px] flex lg:flex-row flex-col gap-5">
-        {/* Story & creator */}
+        {/* Creator Info and Description */}
         <div className="flex-[2] flex flex-col gap-[40px]">
           <div>
             <h4 className="font-epilogue font-semibold text-[18px] text-white uppercase">
@@ -117,15 +113,32 @@ const CampaignDetails = () => {
                   {state.student}
                 </h4>
                 <p className="mt-[4px] font-epilogue font-normal text-[12px] text-[#808191]">
-                  Roll: {state.studentRoll}
+                  Roll Number: {state.studentRoll}
                 </p>
               </div>
             </div>
           </div>
 
+          {/* Campaign Management - Only for campaign owner */}
+          {state.student.toLowerCase() === address.toLowerCase() && (
+            <div>
+              <h4 className="font-epilogue font-semibold text-[18px] text-white uppercase">
+                Campaign Management
+              </h4>
+              <div className="mt-[20px] flex flex-col sm:flex-row gap-[14px]">
+                <CustomButton
+                  btnType="button"
+                  title="Manage Withdrawals"
+                  styles="bg-[#8c6dfd] hover:bg-[#7c5df4] text-white px-6 py-3"
+                  handleClick={() => navigate('/withdrawal', { state })}
+                />
+              </div>
+            </div>
+          )}
+
           <div>
             <h4 className="font-epilogue font-semibold text-[18px] text-white uppercase">
-              Description
+              Story
             </h4>
             <div className="mt-[20px]">
               <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] text-justify">
@@ -136,26 +149,37 @@ const CampaignDetails = () => {
 
           <div>
             <h4 className="font-epilogue font-semibold text-[18px] text-white uppercase">
-              Donators
+              Campaign Stats
             </h4>
             <div className="mt-[20px] flex flex-col gap-4">
-              {donators.length > 0 ? (
-                donators.map((item, index) => (
-                  <div
-                    key={`${item.donator}-${index}`}
-                    className="flex justify-between items-center gap-4"
-                  >
-                    <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px] break-ll">
-                      {index + 1}. {item.donator}
-                    </p>
-                    <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] break-ll">
-                      {item.donation} ETH
-                    </p>
-                  </div>
-                ))
-              ) : (
-                <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] text-justify">
-                  No donators yet. Be the first one!
+              <div className="flex justify-between items-center gap-4">
+                <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px]">
+                  Total Contributors:
+                </p>
+                <p className="font-epilogue font-semibold text-[16px] text-[#8c6dfd] leading-[26px]">
+                  {contributorsCount}
+                </p>
+              </div>
+              <div className="flex justify-between items-center gap-4">
+                <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px]">
+                  Current Balance:
+                </p>
+                <p className="font-epilogue font-semibold text-[16px] text-[#8c6dfd] leading-[26px]">
+                  {state.balance} ETH
+                </p>
+              </div>
+              <div className="flex justify-between items-center gap-4">
+                <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px]">
+                  Withdrawal Requests:
+                </p>
+                <p className="font-epilogue font-semibold text-[16px] text-[#8c6dfd] leading-[26px]">
+                  {state.requestsCount}
+                </p>
+              </div>
+              
+              {contributorsCount === 0 && (
+                <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] text-justify mt-4">
+                  No contributors yet. Be the first one to support this campaign!
                 </p>
               )}
             </div>

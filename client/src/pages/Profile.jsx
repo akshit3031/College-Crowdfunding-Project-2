@@ -7,26 +7,26 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [campaigns, setCampaigns] = useState([]);
 
-  const { address, contract, getUserCampaigns } = useStateContext();
+  const { address, getUserCampaigns } = useStateContext();
 
   const fetchCampaigns = async () => {
     setIsLoading(true);
     const data = await getUserCampaigns();
     setCampaigns(data);
     setIsLoading(false);
-  }
+  };
 
   useEffect(() => {
-    if(contract) fetchCampaigns();
-  }, [address, contract]);
+    if(address) fetchCampaigns();
+  }, [address]);
 
   return (
-    <DisplayCampaigns 
-      title="All Campaigns"
+    <DisplayCampaigns
+      title="My Campaigns"
       isLoading={isLoading}
       campaigns={campaigns}
     />
-  )
+  );
 }
 
 export default Profile

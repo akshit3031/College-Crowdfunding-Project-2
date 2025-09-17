@@ -8,14 +8,14 @@ const StateContext = createContext();
 export const StateContextProvider = ({ children }) => {
   const [campaigns, setCampaigns] = useState([]); // ← store campaigns
 
-  const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
+  const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:7545");
   const signer = new ethers.Wallet(
-    "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
+    "0x402bb2de6b6e086a9ce34abe5d9306edf443ba5b77f8ac79474666f34664fed3",
     provider
   );
 
   const factoryContract = new ethers.Contract(
-    "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+    "0x76BCAF5364fd4dE530e3e4006170a0257420eF7A",
     CollegeCampaignFactoryABI.abi,
     signer
   );
@@ -47,10 +47,10 @@ export const StateContextProvider = ({ children }) => {
     }
   };
 
+
   const fetchCampaigns = async () => {
     try {
       const addresses = await factoryContract.getDeployedCampaigns();
-
       const data = await Promise.all(
         addresses.map(async (address) => {
           const campaignContract = new ethers.Contract(
@@ -60,7 +60,6 @@ export const StateContextProvider = ({ children }) => {
           );
           const summary = await campaignContract.getSummary();
           const studentRollNumber = await campaignContract.studentRollNumber();
-
           return {
             address,
             minimumContribution: ethers.utils.formatEther(summary[0].toString()),
@@ -75,8 +74,7 @@ export const StateContextProvider = ({ children }) => {
           };
         })
       );
-
-      setCampaigns(data); // ← save to state
+      setCampaigns(data);
       return data;
     } catch (error) {
       console.error("Failed to fetch campaigns:", error);
@@ -84,21 +82,195 @@ export const StateContextProvider = ({ children }) => {
     }
   };
 
- return (
-  <StateContext.Provider
-    value={{
-      address: signer.address,
-      factoryContract,
-      createCampaign,
-      campaigns,
-      fetchCampaigns, 
-      getCampaigns: fetchCampaigns, // <--- add alias so Home.js works
-      signer,
-    }}
-  >
-    {children}
-  </StateContext.Provider>
-);
+  // Get campaigns started by the current user
+  const getUserCampaigns = async () => {
+    const allCampaigns = await fetchCampaigns();
+    return allCampaigns.filter((c) => c.student.toLowerCase() === signer.address.toLowerCase());
+  };
+
+  // Check if current user is a teacher
+  const isTeacher = async () => {
+    try {
+      return await factoryContract.teachers(signer.address);
+    } catch (error) {
+      console.error("Failed to check teacher status:", error);
+      return false;
+    }
+  };
+
+  // Get withdrawal requests for a campaign
+  const getWithdrawalRequests = async (campaignAddress) => {
+    try {
+      const campaignContract = new ethers.Contract(
+        campaignAddress,
+        CollegeCampaignABI.abi,
+        signer
+      );
+      
+      const requestsCount = await campaignContract.getRequestsCount();
+      const requests = [];
+      
+      for (let i = 0; i < requestsCount; i++) {
+        const request = await campaignContract.requests(i);
+        requests.push({
+          index: i,
+          description: request.description,
+          value: ethers.utils.formatEther(request.value),
+          recipient: request.recipient,
+          completed: request.completed,
+          approvalCount: request.approvalCount.toNumber()
+        });
+      }
+      
+      return requests;
+    } catch (error) {
+      console.error("Failed to fetch withdrawal requests:", error);
+      return [];
+    }
+  };
+
+  // Create withdrawal request (for campaign owner/student)
+  const createWithdrawalRequest = async (campaignAddress, description, value, recipient) => {
+    try {
+      const campaignContract = new ethers.Contract(
+        campaignAddress,
+        CollegeCampaignABI.abi,
+        signer
+      );
+      
+      const tx = await campaignContract.createWithdrawalRequest(
+        description,
+        ethers.utils.parseEther(value.toString()),
+        recipient
+      );
+      
+      await tx.wait();
+      return true;
+    } catch (error) {
+      console.error("Failed to create withdrawal request:", error);
+      return false;
+    }
+  };
+
+  // Approve withdrawal request (for teachers) - now automatically sends ETH
+  const approveWithdrawalRequest = async (campaignAddress, requestIndex) => {
+    try {
+      const campaignContract = new ethers.Contract(
+        campaignAddress,
+        CollegeCampaignABI.abi,
+        signer
+      );
+      
+      // Teachers approve and ETH is automatically sent to recipient
+      const approveTx = await campaignContract.approveRequest(requestIndex);
+      await approveTx.wait();
+      console.log("Request approved successfully and ETH sent to recipient");
+      
+      return true;
+    } catch (error) {
+      console.error("Failed to approve withdrawal request:", error);
+      return false;
+    }
+  };
+
+  // Check if current user is admin
+  const isAdmin = async () => {
+    try {
+      const adminAddress = await factoryContract.admin();
+      return adminAddress.toLowerCase() === signer.address.toLowerCase();
+    } catch (error) {
+      console.error("Failed to check admin status:", error);
+      return false;
+    }
+  };
+
+  // Add teacher (admin only)
+  const addTeacher = async (teacherAddress) => {
+    try {
+      const tx = await factoryContract.addTeacher(teacherAddress);
+      await tx.wait();
+      return true;
+    } catch (error) {
+      console.error("Failed to add teacher:", error);
+      return false;
+    }
+  };
+
+  // Remove teacher (admin only)
+  const removeTeacher = async (teacherAddress) => {
+    try {
+      const tx = await factoryContract.removeTeacher(teacherAddress);
+      await tx.wait();
+      return true;
+    } catch (error) {
+      console.error("Failed to remove teacher:", error);
+      return false;
+    }
+  };
+
+  // Get all withdrawal requests from all campaigns
+  const getAllWithdrawalRequests = async () => {
+    try {
+      const allCampaigns = await fetchCampaigns();
+      const allRequests = [];
+
+      for (const campaign of allCampaigns) {
+        const campaignContract = new ethers.Contract(
+          campaign.address,
+          CollegeCampaignABI.abi,
+          signer
+        );
+        
+        const requestsCount = await campaignContract.getRequestsCount();
+        
+        for (let i = 0; i < requestsCount; i++) {
+          const request = await campaignContract.requests(i);
+          allRequests.push({
+            campaignAddress: campaign.address,
+            campaignTitle: campaign.title,
+            studentName: campaign.student,
+            studentRoll: campaign.studentRoll,
+            requestIndex: i,
+            description: request.description,
+            value: ethers.utils.formatEther(request.value),
+            recipient: request.recipient,
+            completed: request.completed,
+            approvalCount: request.approvalCount.toNumber()
+          });
+        }
+      }
+      
+      return allRequests;
+    } catch (error) {
+      console.error("Failed to fetch all withdrawal requests:", error);
+      return [];
+    }
+  };
+
+  return (
+    <StateContext.Provider
+      value={{
+        address: signer.address,
+        factoryContract,
+        createCampaign,
+        campaigns,
+        fetchCampaigns,
+        getCampaigns: fetchCampaigns,
+        getUserCampaigns,
+        isTeacher,
+        getWithdrawalRequests,
+        createWithdrawalRequest,
+        approveWithdrawalRequest,
+        isAdmin,
+        addTeacher,
+        removeTeacher,
+        getAllWithdrawalRequests,
+        signer,
+      }}
+    >
+      {children}
+    </StateContext.Provider>
+  );
 };
 
 export const useStateContext = () => useContext(StateContext);
