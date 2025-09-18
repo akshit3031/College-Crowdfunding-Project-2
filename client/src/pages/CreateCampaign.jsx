@@ -66,33 +66,32 @@ const CreateCampaign = () => {
   };
 
   return (
-    <div className="bg-white flex justify-center items-start flex-col rounded-[10px] p-4 sm:p-6 w-full max-w-4xl mx-auto min-h-[calc(100vh-120px)] overflow-y-auto border-2 border-[#DCDCDC]">
-      {isLoading && <Loader />}
-      <div className="flex justify-center items-center p-[16px] w-full bg-[#E62727] rounded-[10px]">
-        <h1 className="font-epilogue font-bold text-[18px] sm:text-[25px] text-white text-center">
-          Start a College Campaign
-        </h1>
-      </div>
-
-      <form onSubmit={handleSubmit} className="w-full mt-[30px] flex flex-col gap-[25px]">
-        <div className="flex flex-col sm:flex-row gap-[20px]">
-          <FormField
-            labelName="Student Name *"
-            placeholder="John Doe"
-            inputType="text"
-            value={form.student}
-            handleChange={(e) => handleFormFieldChange("student", e)}
-          />
-          <FormField
-            labelName="Roll Number *"
-            placeholder="123456"
-            inputType="text"
-            value={form.studentRoll}
-            handleChange={(e) => handleFormFieldChange("studentRoll", e)}
-          />
+    <div className="w-full max-w-2xl mx-auto">
+      <div className="bg-white flex justify-center items-start flex-col rounded-[10px] p-4 sm:p-6 w-full min-h-[calc(100vh-120px)] overflow-y-auto border-2 border-[#DCDCDC]">
+        {isLoading && <Loader />}
+        <div className="flex justify-center items-center p-[16px] w-full bg-[#E62727] rounded-[10px]">
+          <h1 className="font-epilogue font-bold text-[18px] sm:text-[25px] text-white text-center">
+            Start a College Campaign
+          </h1>
         </div>
 
-        <FormField
+        <form onSubmit={handleSubmit} className="w-full mt-[30px] flex flex-col gap-[25px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[20px]">
+            <FormField
+              labelName="Student Name *"
+              placeholder="John Doe"
+              inputType="text"
+              value={form.student}
+              handleChange={(e) => handleFormFieldChange("student", e)}
+            />
+            <FormField
+              labelName="Roll Number *"
+              placeholder="123456"
+              inputType="text"
+              value={form.studentRoll}
+              handleChange={(e) => handleFormFieldChange("studentRoll", e)}
+            />
+          </div>        <FormField
           labelName="Campaign Title *"
           placeholder="Write a title"
           inputType="text"
@@ -115,7 +114,7 @@ const CreateCampaign = () => {
           </h4>
         </div>
         
-        <div className="flex flex-col sm:flex-row gap-[20px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[20px]">
           <FormField
             labelName="Minimum Contribution (ETH) *"
             placeholder="0.01"
@@ -145,6 +144,7 @@ const CreateCampaign = () => {
           <CustomButton btnType="submit" title="Submit new campaign" styles="bg-[#E62727] hover:bg-[#c91f1f] w-full sm:w-auto" />
         </div>
       </form>
+    </div>
     </div>
   );
 };
