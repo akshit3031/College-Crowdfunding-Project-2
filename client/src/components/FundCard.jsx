@@ -92,28 +92,6 @@ const FundCard = ({ owner, title, description, target, amountCollected, image, h
             </p>
           </div>
         </div>
-
-        {/* Campaign Address (for reference) */}
-        <div className="bg-gray-50 rounded p-2 mb-3">
-          <p className="font-epilogue font-normal text-[10px] text-gray-500">
-            Campaign ID: {address ? `${address.substring(0, 8)}...${address.substring(address.length - 6)}` : 'N/A'}
-          </p>
-        </div>
-
-        {/* Creator Info */}
-        <div className="flex items-center gap-[12px]">
-          <div className="w-[30px] h-[30px] rounded-full flex justify-center items-center bg-[#DCDCDC]">
-            <img src={thirdweb} alt="user" className="w-1/2 h-1/2 object-contain"/>
-          </div>
-          <div className="flex-1">
-            <p className="font-epilogue font-normal text-[12px] text-gray-600">
-              Created by
-            </p>
-            <p className="font-epilogue font-medium text-[12px] text-gray-800" title={owner}>
-              {owner ? (owner.length > 20 ? `${owner.substring(0, 20)}...` : owner) : 'Unknown'}
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   )
