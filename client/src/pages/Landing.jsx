@@ -9,19 +9,42 @@ const Landing = () => {
     {
       title: "Start Your Campaign",
       description: "Create fundraising campaigns for educational expenses, projects, or emergencies",
-      icon: "🚀",
+      icon: (
+        <svg className="w-16 h-16 mx-auto" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="30" fill="#E62727" fillOpacity="0.1"/>
+          <path d="M32 8L36.47 24.53L52 20L44.47 32L52 44L36.47 39.47L32 56L27.53 39.47L12 44L19.53 32L12 20L27.53 24.53L32 8Z" fill="#E62727"/>
+          <circle cx="32" cy="32" r="6" fill="#E62727"/>
+        </svg>
+      ),
       action: () => navigate('/create-campaign')
     },
     {
       title: "Support Students",
       description: "Browse and donate to meaningful campaigns from NIT Kurukshetra students",
-      icon: "💝",
+      icon: (
+        <svg className="w-16 h-16 mx-auto" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="30" fill="#1E93AB" fillOpacity="0.1"/>
+          <path d="M32 50C40.8366 50 48 42.8366 48 34C48 25.1634 40.8366 18 32 18C23.1634 18 16 25.1634 16 34C16 42.8366 23.1634 50 32 50Z" fill="#1E93AB"/>
+          <path d="M32 42C36.4183 42 40 38.4183 40 34C40 29.5817 36.4183 26 32 26C27.5817 26 24 29.5817 24 34C24 38.4183 27.5817 42 32 42Z" fill="white"/>
+          <path d="M28 30L30 32L36 26" stroke="#1E93AB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      ),
       action: () => navigate('/campaigns')
     },
     {
       title: "Transparent Process",
       description: "All donations are tracked on blockchain with teacher approval for withdrawals",
-      icon: "🔒",
+      icon: (
+        <svg className="w-16 h-16 mx-auto" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="30" fill="#1E93AB" fillOpacity="0.1"/>
+          <rect x="20" y="22" width="24" height="20" rx="2" fill="#1E93AB"/>
+          <rect x="22" y="24" width="20" height="16" rx="1" fill="white"/>
+          <circle cx="32" cy="32" r="3" fill="#1E93AB"/>
+          <path d="M32 29V35" stroke="#1E93AB" strokeWidth="1.5" strokeLinecap="round"/>
+          <path d="M29 32H35" stroke="#1E93AB" strokeWidth="1.5" strokeLinecap="round"/>
+          <path d="M26 18C26 16.8954 26.8954 16 28 16H36C37.1046 16 38 16.8954 38 18V22H26V18Z" fill="#E62727"/>
+        </svg>
+      ),
       action: () => navigate('/campaigns')
     }
   ];
@@ -105,7 +128,7 @@ const Landing = () => {
                 className="bg-[#F3F2EC] p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer border-2 border-transparent hover:border-[#1E93AB]"
                 onClick={feature.action}
               >
-                <div className="text-6xl mb-6 text-center">
+                <div className="mb-6 text-center">
                   {feature.icon}
                 </div>
                 <h4 className="text-2xl font-bold text-[#E62727] mb-4 text-center">
