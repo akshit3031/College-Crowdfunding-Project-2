@@ -17,7 +17,7 @@ const FundCard = ({ owner, title, description, target, amountCollected, image, h
   };
 
   return (
-    <div className="sm:w-[320px] w-full rounded-[15px] bg-white border-2 border-[#DCDCDC] hover:border-[#1E93AB] cursor-pointer transition-all duration-300 hover:shadow-lg" onClick={handleClick}>
+    <div className="w-full max-w-[320px] lg:max-w-[280px] xl:max-w-[300px] rounded-[15px] bg-white border-2 border-[#DCDCDC] hover:border-[#1E93AB] cursor-pointer transition-all duration-300 hover:shadow-lg" onClick={handleClick}>
       <img 
         src={image || "https://via.placeholder.com/400x200/E5E7EB/6B7280?text=Campaign+Image"} 
         alt="campaign" 

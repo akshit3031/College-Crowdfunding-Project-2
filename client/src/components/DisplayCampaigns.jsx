@@ -28,24 +28,24 @@ const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
         
         {/* Summary Statistics */}
         {totalCampaigns > 0 && (
-          <div className="grid grid-cols-3 gap-2 sm:gap-4 md:flex md:flex-wrap md:gap-4">
-            <div className="bg-white border border-gray-200 rounded-lg px-2 sm:px-3 py-2">
-              <p className="text-[8px] sm:text-[10px] text-gray-600 font-medium">TOTAL RAISED</p>
-              <p className="text-[10px] sm:text-[14px] font-semibold text-[#E62727]">{totalRaised.toFixed(3)} ETH</p>
+          <div className="flex flex-wrap gap-3 lg:gap-4">
+            <div className="bg-white border border-gray-200 rounded-lg px-3 lg:px-4 py-2 min-w-[120px]">
+              <p className="text-[10px] lg:text-[11px] text-gray-600 font-medium">TOTAL RAISED</p>
+              <p className="text-[14px] lg:text-[16px] font-semibold text-[#E62727]">{totalRaised.toFixed(3)} ETH</p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg px-2 sm:px-3 py-2">
-              <p className="text-[8px] sm:text-[10px] text-gray-600 font-medium">TARGET AMOUNT</p>
-              <p className="text-[10px] sm:text-[14px] font-semibold text-[#1E93AB]">{totalTarget.toFixed(3)} ETH</p>
+            <div className="bg-white border border-gray-200 rounded-lg px-3 lg:px-4 py-2 min-w-[120px]">
+              <p className="text-[10px] lg:text-[11px] text-gray-600 font-medium">TARGET AMOUNT</p>
+              <p className="text-[14px] lg:text-[16px] font-semibold text-[#1E93AB]">{totalTarget.toFixed(3)} ETH</p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg px-2 sm:px-3 py-2">
-              <p className="text-[8px] sm:text-[10px] text-gray-600 font-medium">ACTIVE CAMPAIGNS</p>
-              <p className="text-[10px] sm:text-[14px] font-semibold text-[#8b0000]">{activeCampaigns}</p>
+            <div className="bg-white border border-gray-200 rounded-lg px-3 lg:px-4 py-2 min-w-[120px]">
+              <p className="text-[10px] lg:text-[11px] text-gray-600 font-medium">ACTIVE CAMPAIGNS</p>
+              <p className="text-[14px] lg:text-[16px] font-semibold text-[#8b0000]">{activeCampaigns}</p>
             </div>
           </div>
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mt-[20px]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 lg:gap-6 mt-[20px] justify-items-center">
         {isLoading && (
           <div className="col-span-full flex justify-center">
             <img src={loader} alt="loader" className="w-[100px] h-[100px] object-contain" />

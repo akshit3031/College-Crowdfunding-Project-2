@@ -8,15 +8,15 @@ const App = () => {
   return (
     <div className="relative bg-[#F3F2EC] min-h-screen">
       {/* Desktop Sidebar */}
-      <div className="hidden md:fixed md:inset-y-0 md:left-0 md:z-50 md:w-64">
+      <div className="hidden md:block md:fixed md:inset-y-0 md:left-0 md:z-50 md:w-20 lg:w-24">
         <Sidebar />
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-col md:pl-64">
+      <div className="md:pl-20 lg:pl-24">
         <Navbar />
         
-        <main className="flex-1 px-4 py-4 md:px-6 md:py-6 lg:px-8 lg:py-8">
+        <main className="px-4 py-4 md:px-6 md:py-6 lg:px-8 lg:py-8">
           <div className="mx-auto max-w-7xl w-full">
             <Routes>
               <Route path="/" element={<Landing />} />

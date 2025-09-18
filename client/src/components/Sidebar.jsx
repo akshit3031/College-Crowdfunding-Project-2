@@ -19,14 +19,14 @@ const Sidebar = () => {
   const [isActive, setIsActive] = useState('dashboard');
 
   return (
-    <div className="hidden md:flex justify-between items-center flex-col sticky top-5 h-[93vh]">
-      <Link to="/">
-        <div className="w-[52px] h-[52px] bg-white border-2 border-[#E62727] rounded-[10px] flex justify-center items-center">
+    <div className="h-full w-full flex justify-center items-start flex-col bg-[#F3F2EC] pt-5 px-2">
+      <Link to="/" className="mb-8 mx-auto">
+        <div className="w-[52px] h-[52px] bg-white border-2 border-[#E62727] rounded-[10px] flex justify-center items-center hover:border-[#1E93AB] transition-colors shadow-sm">
           <img src={nitLogo} alt="NIT Kurukshetra" className="w-[80%] h-[80%] object-contain" />
         </div>
       </Link>
 
-      <div className="flex-1 flex flex-col justify-between items-center bg-[#DCDCDC] rounded-[20px] w-[76px] py-4 mt-12">
+      <div className="flex-1 flex flex-col justify-between items-center bg-[#DCDCDC] rounded-[20px] w-[76px] py-4 mx-auto min-h-[500px]">
         <div className="flex flex-col justify-center items-center gap-3">
           {navlinks.map((link) => (
             <Icon 
