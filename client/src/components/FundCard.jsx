@@ -42,16 +42,11 @@ const FundCard = ({ owner, title, description, target, amountCollected, image, h
           
           {/* Student Information */}
           <div className="bg-[#F8F9FA] rounded-lg p-2 mb-2">
-            <div className="flex items-center justify-between">
-              <p className="font-epilogue font-medium text-[12px] text-[#8b0000]">
-                Student: {owner ? (owner.length > 15 ? `${owner.substring(0, 15)}...` : owner) : 'N/A'}
+            {studentRoll && (
+              <p className="font-epilogue font-medium text-[12px] text-[#1E93AB] text-center">
+                Roll No: {studentRoll}
               </p>
-              {studentRoll && (
-                <p className="font-epilogue font-medium text-[12px] text-[#1E93AB]">
-                  Roll: {studentRoll}
-                </p>
-              )}
-            </div>
+            )}
           </div>
           
           <p className="font-epilogue font-normal text-[13px] text-gray-600 text-left leading-[18px]" title={description}>
