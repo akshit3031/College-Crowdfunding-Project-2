@@ -18,10 +18,10 @@ const Navbar = () => {
       <div className="md:hidden">
         {/* Top Bar */}
         <div className="flex items-center justify-between p-4 bg-white border-b border-gray-200">
-          <div className="flex items-center space-x-3">
+          <Link to="/" className="flex items-center space-x-3">
             <img src={nitLogo} alt="NIT Logo" className="w-8 h-8 object-contain" />
             <h1 className="text-lg font-bold text-[#8b0000]">NIT Crowdfunding</h1>
-          </div>
+          </Link>
           
           <button
             onClick={() => setToggleDrawer(!toggleDrawer)}
