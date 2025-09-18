@@ -1,10 +1,5 @@
 # 🎓 NIT Kurukshetra - Blockchain Crowdfunding Platform
 
-[![Live Demo](https://img.shield- Intuitive user experience
-
-
-### **Frontend*/Live-Demo-blue)](https://college-crowdfunding-project-2.vercel.app/)
-
 
 ## 📸 Platform Overview
 
