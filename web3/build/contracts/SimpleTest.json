@@ -213,15 +213,15 @@
     "absolutePath": "project:/contracts/SimpleTest.sol",
     "exportedSymbols": {
       "SimpleTest": [
-        452
+        469
       ]
     },
-    "id": 453,
+    "id": 470,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 432,
+        "id": 449,
         "literals": [
           "solidity",
           "^",
@@ -238,9 +238,9 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 452,
+        "id": 469,
         "linearizedBaseContracts": [
-          452
+          469
         ],
         "name": "SimpleTest",
         "nameLocation": "70:10:1",
@@ -249,12 +249,12 @@
           {
             "constant": false,
             "functionSelector": "8da5cb5b",
-            "id": 434,
+            "id": 451,
             "mutability": "mutable",
             "name": "owner",
             "nameLocation": "103:5:1",
             "nodeType": "VariableDeclaration",
-            "scope": 452,
+            "scope": 469,
             "src": "88:20:1",
             "stateVariable": true,
             "storageLocation": "default",
@@ -263,7 +263,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 433,
+              "id": 450,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "88:7:1",
@@ -277,23 +277,23 @@
           },
           {
             "body": {
-              "id": 442,
+              "id": 459,
               "nodeType": "Block",
               "src": "135:37:1",
               "statements": [
                 {
                   "expression": {
-                    "id": 440,
+                    "id": 457,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 437,
+                      "id": 454,
                       "name": "owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 434,
+                      "referencedDeclaration": 451,
                       "src": "146:5:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -304,7 +304,7 @@
                     "operator": "=",
                     "rightHandSide": {
                       "expression": {
-                        "id": 438,
+                        "id": 455,
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
@@ -315,7 +315,7 @@
                           "typeString": "msg"
                         }
                       },
-                      "id": 439,
+                      "id": 456,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -335,13 +335,13 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 441,
+                  "id": 458,
                   "nodeType": "ExpressionStatement",
                   "src": "146:18:1"
                 }
               ]
             },
-            "id": 443,
+            "id": 460,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [],
@@ -349,18 +349,18 @@
             "nameLocation": "-1:-1:-1",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 435,
+              "id": 452,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "132:2:1"
             },
             "returnParameters": {
-              "id": 436,
+              "id": 453,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "135:0:1"
             },
-            "scope": 452,
+            "scope": 469,
             "src": "121:51:1",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -368,32 +368,32 @@
           },
           {
             "body": {
-              "id": 450,
+              "id": 467,
               "nodeType": "Block",
               "src": "236:31:1",
               "statements": [
                 {
                   "expression": {
-                    "id": 448,
+                    "id": 465,
                     "name": "owner",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 434,
+                    "referencedDeclaration": 451,
                     "src": "254:5:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
-                  "functionReturnParameters": 447,
-                  "id": 449,
+                  "functionReturnParameters": 464,
+                  "id": 466,
                   "nodeType": "Return",
                   "src": "247:12:1"
                 }
               ]
             },
             "functionSelector": "893d20e8",
-            "id": 451,
+            "id": 468,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -401,23 +401,23 @@
             "nameLocation": "193:8:1",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 444,
+              "id": 461,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "201:2:1"
             },
             "returnParameters": {
-              "id": 447,
+              "id": 464,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 446,
+                  "id": 463,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 451,
+                  "scope": 468,
                   "src": "227:7:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -426,7 +426,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 445,
+                    "id": 462,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "227:7:1",
@@ -441,14 +441,14 @@
               ],
               "src": "226:9:1"
             },
-            "scope": 452,
+            "scope": 469,
             "src": "184:83:1",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 453,
+        "scope": 470,
         "src": "61:209:1",
         "usedErrors": []
       }
@@ -463,12 +463,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xc571Ea25bD1F3A1CD0c8BaDb6Dd91aBA08418C76",
-      "transactionHash": "0x0a0b209186622dd2d3e07159338ad96d5ec85e9b3466e01b2e4272a83a773ac3"
+      "address": "0xfAc9b183f9341e739426a164B6900fbC8bd26731",
+      "transactionHash": "0xcc9f71cef14ca684c6995e3c70b64a3305c0deaa474a8854389999116c6efe96"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-09-17T04:41:25.865Z",
+  "updatedAt": "2025-09-18T13:26:13.551Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
