@@ -2,12 +2,9 @@
 
 [![Live Demo](https://img.shield- Intuitive user experience
 
-## 🛠️ Technology Stack
 
 ### **Frontend*/Live-Demo-blue)](https://college-crowdfunding-project-2.vercel.app/)
-[![GitHub](https://img.shields.io/github/license/akshit3031/College-Crowdfunding-Project-2)](https://github.com/akshit3031/College-Crowdfunding-Project-2)
-[![React](https://img.shields.io/badge/React-18.2.0-blue)](https://reactjs.org/)
-[![Solidity](https://img.shields.io/badge/Solidity-^0.8.19-green)](https://soliditylang.org/)
+
 
 ## 📸 Platform Overview
 
