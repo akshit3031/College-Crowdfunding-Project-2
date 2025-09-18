@@ -57,10 +57,10 @@ const Landing = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F3F2EC]">
+    <div className="min-h-screen bg-[#F3F2EC] -mx-4 md:-mx-6 lg:-mx-8">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-20 pb-16">
           <div className="text-center">
             {/* Main Title */}
             <h1 className="text-5xl md:text-7xl font-bold text-[#E62727] mb-6">

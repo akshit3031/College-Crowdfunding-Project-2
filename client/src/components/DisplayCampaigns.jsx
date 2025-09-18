@@ -20,15 +20,15 @@ const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
   console.log("Campaigns:", campaigns);
 
   return (
-    <div className="px-2 sm:px-0">
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-6">
-        <h1 className="font-epilogue font-semibold text-[18px] text-gray-800 text-left mb-4 lg:mb-0">
+    <div className="px-2 sm:px-0 w-full">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-6 gap-4">
+        <h1 className="font-epilogue font-semibold text-[18px] text-gray-800 text-left mb-0">
           {title} ({totalCampaigns})
         </h1>
         
         {/* Summary Statistics */}
         {totalCampaigns > 0 && (
-          <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:flex lg:flex-wrap">
+          <div className="grid grid-cols-3 gap-2 sm:gap-4 md:flex md:flex-wrap md:gap-4">
             <div className="bg-white border border-gray-200 rounded-lg px-2 sm:px-3 py-2">
               <p className="text-[8px] sm:text-[10px] text-gray-600 font-medium">TOTAL RAISED</p>
               <p className="text-[10px] sm:text-[14px] font-semibold text-[#E62727]">{totalRaised.toFixed(3)} ETH</p>
@@ -45,7 +45,7 @@ const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mt-[20px]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mt-[20px]">
         {isLoading && (
           <div className="col-span-full flex justify-center">
             <img src={loader} alt="loader" className="w-[100px] h-[100px] object-contain" />

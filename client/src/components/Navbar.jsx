@@ -130,16 +130,16 @@ const Navbar = () => {
       </div>
 
       {/* Desktop Header */}
-      <div className="hidden md:flex items-center justify-between p-6 bg-white border-b border-gray-200">
+      <div className="hidden md:flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200">
         {/* Search Bar - Desktop */}
         <div className="flex-1 max-w-md">
-          <div className="flex items-center bg-gray-100 rounded-full px-4 py-3">
+          <div className="flex items-center bg-gray-100 rounded-full px-4 py-2">
             <input 
               type="text" 
               placeholder="Search for campaigns..." 
               className="flex-1 bg-transparent outline-none text-sm text-gray-700 placeholder-gray-500"
             />
-            <button className="ml-2 p-2 bg-[#1E93AB] rounded-full hover:bg-[#176a82] transition-colors">
+            <button className="ml-2 p-1.5 bg-[#1E93AB] rounded-full hover:bg-[#176a82] transition-colors">
               <img src={search} alt="search" className="w-4 h-4" />
             </button>
           </div>

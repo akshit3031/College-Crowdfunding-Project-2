@@ -16,8 +16,8 @@ const App = () => {
       <div className="flex flex-col md:pl-64">
         <Navbar />
         
-        <main className="flex-1 px-4 py-6 md:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
+        <main className="flex-1 px-4 py-4 md:px-6 md:py-6 lg:px-8 lg:py-8">
+          <div className="mx-auto max-w-7xl w-full">
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route path="/campaigns" element={<Home />} />
