@@ -81,15 +81,15 @@ const AllWithdrawals = () => {
   }
 
   return (
-    <div className="w-full max-w-[1400px] mx-auto">
-      <div className="flex flex-col gap-6">
+    <div className="w-full max-w-[1400px] mx-auto px-2 sm:px-0">
+      <div className="flex flex-col gap-4 sm:gap-6">
         {/* Header */}
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
-            <h1 className="font-epilogue font-semibold text-[24px] text-[#E62727]">
+            <h1 className="font-epilogue font-semibold text-[20px] sm:text-[24px] text-[#E62727]">
               All Withdrawal Requests
             </h1>
-            <p className="font-epilogue font-normal text-[16px] text-gray-600 mt-2">
+            <p className="font-epilogue font-normal text-[14px] sm:text-[16px] text-gray-600 mt-2">
               {isTeacherUser ? 'Approve requests to instantly send ETH to recipients' : 'View all withdrawal requests'}
             </p>
           </div>
@@ -97,7 +97,7 @@ const AllWithdrawals = () => {
             <CustomButton
               btnType="button"
               title="Refresh"
-              styles="bg-[#DCDCDC] hover:bg-gray-300 text-gray-800 px-6 py-2"
+              styles="bg-[#DCDCDC] hover:bg-gray-300 text-gray-800 px-4 sm:px-6 py-2 text-sm sm:text-base w-full sm:w-auto"
               handleClick={refreshData}
             />
           </div>
@@ -105,28 +105,28 @@ const AllWithdrawals = () => {
 
         {/* Status Info */}
         <div className="bg-white border-2 border-[#DCDCDC] rounded-[15px] p-4">
-          <div className="flex justify-between items-center">
+          <div className="grid grid-cols-3 gap-4 text-center sm:text-left">
             <div>
-              <p className="font-epilogue font-normal text-[14px] text-gray-600">
+              <p className="font-epilogue font-normal text-[12px] sm:text-[14px] text-gray-600">
                 Total Requests
               </p>
-              <p className="font-epilogue font-semibold text-[18px] text-gray-800">
+              <p className="font-epilogue font-semibold text-[16px] sm:text-[18px] text-gray-800">
                 {withdrawalRequests.length}
               </p>
             </div>
             <div>
-              <p className="font-epilogue font-normal text-[14px] text-gray-600">
+              <p className="font-epilogue font-normal text-[12px] sm:text-[14px] text-gray-600">
                 Pending Requests
               </p>
-              <p className="font-epilogue font-semibold text-[18px] text-[#1E93AB]">
+              <p className="font-epilogue font-semibold text-[16px] sm:text-[18px] text-[#1E93AB]">
                 {withdrawalRequests.filter(req => !req.completed).length}
               </p>
             </div>
             <div>
-              <p className="font-epilogue font-normal text-[14px] text-gray-600">
+              <p className="font-epilogue font-normal text-[12px] sm:text-[14px] text-gray-600">
                 Your Role
               </p>
-              <p className="font-epilogue font-semibold text-[16px] text-[#1E93AB]">
+              <p className="font-epilogue font-semibold text-[14px] sm:text-[16px] text-[#1E93AB]">
                 {isTeacherUser ? 'Teacher' : 'Student/Contributor'}
               </p>
             </div>
@@ -134,140 +134,210 @@ const AllWithdrawals = () => {
         </div>
 
         {/* Withdrawal Requests Table */}
-        <div className="bg-white border-2 border-[#DCDCDC] rounded-[15px] p-6">
-          <h2 className="font-epilogue font-semibold text-[20px] text-gray-800 mb-4">
+        <div className="bg-white border-2 border-[#DCDCDC] rounded-[15px] p-3 sm:p-6">
+          <h2 className="font-epilogue font-semibold text-[18px] sm:text-[20px] text-gray-800 mb-4">
             Withdrawal Requests Table
           </h2>
           
           {withdrawalRequests.length === 0 ? (
             <div className="text-center py-8">
-              <p className="font-epilogue font-normal text-[16px] text-gray-600">
+              <p className="font-epilogue font-normal text-[14px] sm:text-[16px] text-gray-600">
                 No withdrawal requests found.
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead>
-                  <tr className="border-b border-[#DCDCDC]">
-                    <th className="font-epilogue font-semibold text-[14px] text-gray-600 py-3 px-2">Campaign</th>
-                    <th className="font-epilogue font-semibold text-[14px] text-gray-600 py-3 px-2">Student</th>
-                    <th className="font-epilogue font-semibold text-[14px] text-gray-600 py-3 px-2">Description</th>
-                    <th className="font-epilogue font-semibold text-[14px] text-gray-600 py-3 px-2">Amount</th>
-                    <th className="font-epilogue font-semibold text-[14px] text-gray-600 py-3 px-2">Recipient</th>
-                    <th className="font-epilogue font-semibold text-[14px] text-gray-600 py-3 px-2">Approvals</th>
-                    <th className="font-epilogue font-semibold text-[14px] text-gray-600 py-3 px-2">Status</th>
-                    {isTeacherUser && <th className="font-epilogue font-semibold text-[14px] text-gray-600 py-3 px-2">Action</th>}
-                  </tr>
-                </thead>
-                <tbody>
-                  {withdrawalRequests.map((request, index) => (
-                    <tr key={`${request.campaignAddress}-${request.requestIndex}`} 
-                        className="border-b border-[#DCDCDC] hover:bg-[#F3F2EC] transition-colors">
-                      
-                      {/* Campaign */}
-                      <td className="py-4 px-2">
-                        <div>
-                          <p className="font-epilogue font-medium text-[14px] text-gray-800 truncate max-w-[120px]">
-                            {request.campaignTitle}
-                          </p>
-                          <p className="font-mono text-[10px] text-gray-600">
-                            {request.campaignAddress.slice(0, 8)}...
-                          </p>
-                        </div>
-                      </td>
-
-                      {/* Student */}
-                      <td className="py-4 px-2">
-                        <div>
-                          <p className="font-epilogue font-normal text-[12px] text-gray-600">
-                            Roll: {request.studentRoll}
-                          </p>
-                          <p className="font-mono text-[10px] text-gray-500">
-                            {request.studentName.slice(0, 8)}...
-                          </p>
-                        </div>
-                      </td>
-
-                      {/* Description */}
-                      <td className="py-4 px-2">
-                        <p className="font-epilogue font-normal text-[14px] text-gray-800 max-w-[150px] truncate">
-                          {request.description}
-                        </p>
-                      </td>
-
-                      {/* Amount */}
-                      <td className="py-4 px-2">
-                        <p className="font-epilogue font-semibold text-[14px] text-[#1E93AB]">
-                          {request.value} ETH
-                        </p>
-                      </td>
-
-                      {/* Recipient */}
-                      <td className="py-4 px-2">
-                        <p className="font-mono text-[10px] text-gray-600">
-                          {request.recipient.slice(0, 8)}...{request.recipient.slice(-4)}
-                        </p>
-                      </td>
-
-                      {/* Approvals */}
-                      <td className="py-4 px-2">
-                        <div className="flex items-center gap-2">
-                          <span className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full text-[12px] font-semibold">
-                            {request.approvalCount}
-                          </span>
-                          {processingRequest === `${request.campaignAddress}-${request.requestIndex}` && (
-                            <span className="text-[10px] text-yellow-400">Processing...</span>
-                          )}
-                        </div>
-                      </td>
-
-                      {/* Status */}
-                      <td className="py-4 px-2">
-                        <span className={`px-2 py-1 rounded-full text-[10px] font-semibold ${
-                          request.completed 
-                            ? 'bg-green-500/20 text-green-400' 
-                            : 'bg-yellow-500/20 text-yellow-400'
-                        }`}>
-                          {request.completed ? 'Completed' : 'Pending'}
-                        </span>
-                      </td>
-
-                      {/* Action */}
-                      {isTeacherUser && (
-                        <td className="py-4 px-2">
-                          {!request.completed && (
-                            <CustomButton
-                              btnType="button"
-                              title={processingRequest === `${request.campaignAddress}-${request.requestIndex}` ? "Sending ETH..." : "Approve & Send"}
-                              styles={`${
-                                processingRequest === `${request.campaignAddress}-${request.requestIndex}` 
-                                  ? "bg-gray-600 text-gray-300" 
-                                  : "bg-green-600 hover:bg-green-700 text-white"
-                              } px-3 py-1 text-[12px] transition-colors`}
-                              handleClick={() => handleApprove(request.campaignAddress, request.requestIndex)}
-                              disabled={processingRequest === `${request.campaignAddress}-${request.requestIndex}`}
-                            />
-                          )}
-                          {request.completed && (
-                            <span className="text-[12px] text-green-400 font-semibold">✓ Approved</span>
-                          )}
-                        </td>
-                      )}
+            <>
+              {/* Desktop Table */}
+              <div className="hidden lg:block overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead>
+                    <tr className="border-b border-[#DCDCDC]">
+                      <th className="font-epilogue font-semibold text-[14px] text-gray-600 py-3 px-2">Campaign</th>
+                      <th className="font-epilogue font-semibold text-[14px] text-gray-600 py-3 px-2">Student</th>
+                      <th className="font-epilogue font-semibold text-[14px] text-gray-600 py-3 px-2">Description</th>
+                      <th className="font-epilogue font-semibold text-[14px] text-gray-600 py-3 px-2">Amount</th>
+                      <th className="font-epilogue font-semibold text-[14px] text-gray-600 py-3 px-2">Recipient</th>
+                      <th className="font-epilogue font-semibold text-[14px] text-gray-600 py-3 px-2">Approvals</th>
+                      <th className="font-epilogue font-semibold text-[14px] text-gray-600 py-3 px-2">Status</th>
+                      {isTeacherUser && <th className="font-epilogue font-semibold text-[14px] text-gray-600 py-3 px-2">Action</th>}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {withdrawalRequests.map((request, index) => (
+                      <tr key={`${request.campaignAddress}-${request.requestIndex}`} 
+                          className="border-b border-[#DCDCDC] hover:bg-[#F3F2EC] transition-colors">
+                        
+                        {/* Campaign */}
+                        <td className="py-4 px-2">
+                          <div>
+                            <p className="font-epilogue font-medium text-[14px] text-gray-800 truncate max-w-[120px]">
+                              {request.campaignTitle}
+                            </p>
+                            <p className="font-mono text-[10px] text-gray-600">
+                              {request.campaignAddress.slice(0, 8)}...
+                            </p>
+                          </div>
+                        </td>
+
+                        {/* Student */}
+                        <td className="py-4 px-2">
+                          <div>
+                            <p className="font-epilogue font-normal text-[12px] text-gray-600">
+                              Roll: {request.studentRoll}
+                            </p>
+                            <p className="font-mono text-[10px] text-gray-500">
+                              {request.studentName.slice(0, 8)}...
+                            </p>
+                          </div>
+                        </td>
+
+                        {/* Description */}
+                        <td className="py-4 px-2">
+                          <p className="font-epilogue font-normal text-[14px] text-gray-800 max-w-[150px] truncate">
+                            {request.description}
+                          </p>
+                        </td>
+
+                        {/* Amount */}
+                        <td className="py-4 px-2">
+                          <p className="font-epilogue font-semibold text-[14px] text-[#1E93AB]">
+                            {request.value} ETH
+                          </p>
+                        </td>
+
+                        {/* Recipient */}
+                        <td className="py-4 px-2">
+                          <p className="font-mono text-[10px] text-gray-600">
+                            {request.recipient.slice(0, 8)}...{request.recipient.slice(-4)}
+                          </p>
+                        </td>
+
+                        {/* Approvals */}
+                        <td className="py-4 px-2">
+                          <div className="flex items-center gap-2">
+                            <span className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full text-[12px] font-semibold">
+                              {request.approvalCount}
+                            </span>
+                            {processingRequest === `${request.campaignAddress}-${request.requestIndex}` && (
+                              <span className="text-[10px] text-yellow-400">Processing...</span>
+                            )}
+                          </div>
+                        </td>
+
+                        {/* Status */}
+                        <td className="py-4 px-2">
+                          <span className={`px-2 py-1 rounded-full text-[10px] font-semibold ${
+                            request.completed 
+                              ? 'bg-green-500/20 text-green-400' 
+                              : 'bg-yellow-500/20 text-yellow-400'
+                          }`}>
+                            {request.completed ? 'Completed' : 'Pending'}
+                          </span>
+                        </td>
+
+                        {/* Action */}
+                        {isTeacherUser && (
+                          <td className="py-4 px-2">
+                            {!request.completed && (
+                              <CustomButton
+                                btnType="button"
+                                title={processingRequest === `${request.campaignAddress}-${request.requestIndex}` ? "Sending ETH..." : "Approve & Send"}
+                                styles={`${
+                                  processingRequest === `${request.campaignAddress}-${request.requestIndex}` 
+                                    ? "bg-gray-600 text-gray-300" 
+                                    : "bg-green-600 hover:bg-green-700 text-white"
+                                } px-3 py-1 text-[12px] transition-colors`}
+                                handleClick={() => handleApprove(request.campaignAddress, request.requestIndex)}
+                                disabled={processingRequest === `${request.campaignAddress}-${request.requestIndex}`}
+                              />
+                            )}
+                            {request.completed && (
+                              <span className="text-[12px] text-green-400 font-semibold">✓ Approved</span>
+                            )}
+                          </td>
+                        )}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile Card Layout */}
+              <div className="lg:hidden space-y-4">
+                {withdrawalRequests.map((request, index) => (
+                  <div key={`${request.campaignAddress}-${request.requestIndex}`} 
+                       className="bg-[#F3F2EC] border border-[#DCDCDC] rounded-lg p-4">
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex-1">
+                        <h3 className="font-epilogue font-medium text-[14px] text-gray-800 mb-1">
+                          {request.campaignTitle}
+                        </h3>
+                        <p className="font-epilogue font-normal text-[12px] text-gray-600">
+                          Roll: {request.studentRoll}
+                        </p>
+                      </div>
+                      <span className={`px-2 py-1 rounded-full text-[10px] font-semibold ${
+                        request.completed 
+                          ? 'bg-green-500/20 text-green-400' 
+                          : 'bg-yellow-500/20 text-yellow-400'
+                      }`}>
+                        {request.completed ? 'Completed' : 'Pending'}
+                      </span>
+                    </div>
+
+                    <div className="space-y-2 mb-3">
+                      <div className="flex justify-between text-[12px]">
+                        <span className="text-gray-600">Amount:</span>
+                        <span className="font-semibold text-[#1E93AB]">{request.value} ETH</span>
+                      </div>
+                      <div className="flex justify-between text-[12px]">
+                        <span className="text-gray-600">Approvals:</span>
+                        <span className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full font-semibold">
+                          {request.approvalCount}
+                        </span>
+                      </div>
+                      <div className="text-[12px]">
+                        <span className="text-gray-600">Description:</span>
+                        <p className="text-gray-800 mt-1">{request.description}</p>
+                      </div>
+                      <div className="text-[10px]">
+                        <span className="text-gray-600">Recipient:</span>
+                        <p className="font-mono text-gray-600 break-all">
+                          {request.recipient}
+                        </p>
+                      </div>
+                    </div>
+
+                    {isTeacherUser && !request.completed && (
+                      <CustomButton
+                        btnType="button"
+                        title={processingRequest === `${request.campaignAddress}-${request.requestIndex}` ? "Sending ETH..." : "Approve & Send ETH"}
+                        styles={`${
+                          processingRequest === `${request.campaignAddress}-${request.requestIndex}` 
+                            ? "bg-gray-600 text-gray-300" 
+                            : "bg-green-600 hover:bg-green-700 text-white"
+                        } px-4 py-2 text-[12px] transition-colors w-full`}
+                        handleClick={() => handleApprove(request.campaignAddress, request.requestIndex)}
+                        disabled={processingRequest === `${request.campaignAddress}-${request.requestIndex}`}
+                      />
+                    )}
+                    
+                    {processingRequest === `${request.campaignAddress}-${request.requestIndex}` && (
+                      <p className="text-[10px] text-yellow-600 text-center mt-2">Processing transaction...</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </div>
 
         {/* Legend */}
         <div className="bg-white border-2 border-[#DCDCDC] rounded-[15px] p-4">
-          <h3 className="font-epilogue font-semibold text-[16px] text-gray-800 mb-3">
+          <h3 className="font-epilogue font-semibold text-[14px] sm:text-[16px] text-gray-800 mb-3">
             Legend
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-[12px]">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-[10px] sm:text-[12px]">
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 bg-yellow-500/20 rounded-full"></span>
               <span className="text-gray-600">Pending</span>

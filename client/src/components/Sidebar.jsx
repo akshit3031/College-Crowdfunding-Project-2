@@ -19,7 +19,7 @@ const Sidebar = () => {
   const [isActive, setIsActive] = useState('dashboard');
 
   return (
-    <div className="flex justify-between items-center flex-col sticky top-5 h-[93vh]">
+    <div className="hidden md:flex justify-between items-center flex-col sticky top-5 h-[93vh]">
       <Link to="/">
         <div className="w-[52px] h-[52px] bg-white border-2 border-[#E62727] rounded-[10px] flex justify-center items-center">
           <img src={nitLogo} alt="NIT Kurukshetra" className="w-[80%] h-[80%] object-contain" />

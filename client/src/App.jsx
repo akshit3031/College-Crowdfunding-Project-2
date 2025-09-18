@@ -6,24 +6,30 @@ import { Landing, CampaignDetails, CreateCampaign, Home, Profile, Withdrawal, Ad
 
 const App = () => {
   return (
-    <div className="relative sm:-8 p-4 bg-[#F3F2EC] min-h-screen flex flex-row">
-      <div className="sm:flex hidden mr-10 relative">
+    <div className="relative bg-[#F3F2EC] min-h-screen">
+      {/* Desktop Sidebar */}
+      <div className="hidden md:fixed md:inset-y-0 md:left-0 md:z-50 md:w-64">
         <Sidebar />
       </div>
 
-      <div className="flex-1 max-sm:w-full max-w-[1280px] mx-auto sm:pr-5">
+      {/* Main Content */}
+      <div className="flex flex-col md:pl-64">
         <Navbar />
-
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/campaigns" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/create-campaign" element={<CreateCampaign />} />
-          <Route path="/campaign-details/:id" element={<CampaignDetails />} />
-          <Route path="/withdrawal" element={<Withdrawal />} />
-          <Route path="/admin" element={<AdminPanel />} />
-          <Route path="/all-withdrawals" element={<AllWithdrawals />} />
-        </Routes>
+        
+        <main className="flex-1 px-4 py-6 md:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/campaigns" element={<Home />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/create-campaign" element={<CreateCampaign />} />
+              <Route path="/campaign-details/:id" element={<CampaignDetails />} />
+              <Route path="/withdrawal" element={<Withdrawal />} />
+              <Route path="/admin" element={<AdminPanel />} />
+              <Route path="/all-withdrawals" element={<AllWithdrawals />} />
+            </Routes>
+          </div>
+        </main>
       </div>
     </div>
   )
