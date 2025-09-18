@@ -14,7 +14,7 @@ const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
 
   return (
     <div>
-      <h1 className="font-epilogue font-semibold text-[18px] text-white text-left">
+      <h1 className="font-epilogue font-semibold text-[18px] text-gray-800 text-left">
         {title} ({campaigns.length})
       </h1>
 
@@ -24,7 +24,7 @@ const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
         )}
 
         {!isLoading && campaigns.length === 0 && (
-          <p className="font-epilogue font-semibold text-[14px] leading-[30px] text-[#818183]">
+          <p className="font-epilogue font-semibold text-[14px] leading-[30px] text-gray-600">
             No campaigns available
           </p>
         )}

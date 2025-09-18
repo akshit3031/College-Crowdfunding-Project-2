@@ -70,9 +70,9 @@ const CampaignDetails = () => {
             alt="campaign"
             className="w-full h-[410px] object-cover rounded-xl"
           />
-          <div className="relative w-full h-[5px] bg-[#3a3a43] mt-2">
+          <div className="relative w-full h-[5px] bg-[#DCDCDC] mt-2">
             <div
-              className="absolute h-full bg-[#4acd8d]"
+              className="absolute h-full bg-[#1E93AB]"
               style={{
                 width: `${(state.balance / state.targetAmount) * 100}%`,
                 maxWidth: '100%',
@@ -97,11 +97,11 @@ const CampaignDetails = () => {
         {/* Creator Info and Description */}
         <div className="flex-[2] flex flex-col gap-[40px]">
           <div>
-            <h4 className="font-epilogue font-semibold text-[18px] text-white uppercase">
+            <h4 className="font-epilogue font-semibold text-[18px] text-gray-800 uppercase">
               Creator
             </h4>
             <div className="mt-[20px] flex flex-row items-center flex-wrap gap-[14px]">
-              <div className="w-[52px] h-[52px] flex items-center justify-center rounded-full bg-[#2c2f32] cursor-pointer">
+              <div className="w-[52px] h-[52px] flex items-center justify-center rounded-full bg-[#DCDCDC] cursor-pointer">
                 <img
                   src={thirdweb}
                   alt="user"
@@ -109,10 +109,10 @@ const CampaignDetails = () => {
                 />
               </div>
               <div>
-                <h4 className="font-epilogue font-semibold text-[14px] text-white break-all">
+                <h4 className="font-epilogue font-semibold text-[14px] text-gray-800 break-all">
                   {state.student}
                 </h4>
-                <p className="mt-[4px] font-epilogue font-normal text-[12px] text-[#808191]">
+                <p className="mt-[4px] font-epilogue font-normal text-[12px] text-gray-600">
                   Roll Number: {state.studentRoll}
                 </p>
               </div>
@@ -122,14 +122,14 @@ const CampaignDetails = () => {
           {/* Campaign Management - Only for campaign owner */}
           {state.student.toLowerCase() === address.toLowerCase() && (
             <div>
-              <h4 className="font-epilogue font-semibold text-[18px] text-white uppercase">
+              <h4 className="font-epilogue font-semibold text-[18px] text-gray-800 uppercase">
                 Campaign Management
               </h4>
               <div className="mt-[20px] flex flex-col sm:flex-row gap-[14px]">
                 <CustomButton
                   btnType="button"
                   title="Manage Withdrawals"
-                  styles="bg-[#8c6dfd] hover:bg-[#7c5df4] text-white px-6 py-3"
+                  styles="bg-[#E62727] hover:bg-[#c91f1f] text-white px-6 py-3"
                   handleClick={() => navigate('/withdrawal', { state })}
                 />
               </div>
@@ -137,48 +137,48 @@ const CampaignDetails = () => {
           )}
 
           <div>
-            <h4 className="font-epilogue font-semibold text-[18px] text-white uppercase">
+            <h4 className="font-epilogue font-semibold text-[18px] text-gray-800 uppercase">
               Story
             </h4>
             <div className="mt-[20px]">
-              <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] text-justify">
+              <p className="font-epilogue font-normal text-[16px] text-gray-600 leading-[26px] text-justify">
                 {state.description}
               </p>
             </div>
           </div>
 
           <div>
-            <h4 className="font-epilogue font-semibold text-[18px] text-white uppercase">
+            <h4 className="font-epilogue font-semibold text-[18px] text-gray-800 uppercase">
               Campaign Stats
             </h4>
             <div className="mt-[20px] flex flex-col gap-4">
               <div className="flex justify-between items-center gap-4">
-                <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px]">
+                <p className="font-epilogue font-normal text-[16px] text-gray-600 leading-[26px]">
                   Total Contributors:
                 </p>
-                <p className="font-epilogue font-semibold text-[16px] text-[#8c6dfd] leading-[26px]">
+                <p className="font-epilogue font-semibold text-[16px] text-[#1E93AB] leading-[26px]">
                   {contributorsCount}
                 </p>
               </div>
               <div className="flex justify-between items-center gap-4">
-                <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px]">
+                <p className="font-epilogue font-normal text-[16px] text-gray-600 leading-[26px]">
                   Current Balance:
                 </p>
-                <p className="font-epilogue font-semibold text-[16px] text-[#8c6dfd] leading-[26px]">
+                <p className="font-epilogue font-semibold text-[16px] text-[#E62727] leading-[26px]">
                   {state.balance} ETH
                 </p>
               </div>
               <div className="flex justify-between items-center gap-4">
-                <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px]">
+                <p className="font-epilogue font-normal text-[16px] text-gray-600 leading-[26px]">
                   Withdrawal Requests:
                 </p>
-                <p className="font-epilogue font-semibold text-[16px] text-[#8c6dfd] leading-[26px]">
+                <p className="font-epilogue font-semibold text-[16px] text-[#1E93AB] leading-[26px]">
                   {state.requestsCount}
                 </p>
               </div>
               
               {contributorsCount === 0 && (
-                <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] text-justify mt-4">
+                <p className="font-epilogue font-normal text-[16px] text-gray-600 leading-[26px] text-justify mt-4">
                   No contributors yet. Be the first one to support this campaign!
                 </p>
               )}
@@ -188,11 +188,11 @@ const CampaignDetails = () => {
 
         {/* Fund campaign */}
         <div className="flex-1">
-          <h4 className="font-epilogue font-semibold text-[18px] text-white uppercase">
+          <h4 className="font-epilogue font-semibold text-[18px] text-gray-800 uppercase">
             Fund
           </h4>
-          <div className="mt-[20px] flex flex-col p-4 bg-[#1c1c24] rounded-[10px]">
-            <p className="font-epilogue font-medium text-[20px] leading-[30px] text-center text-[#808191]">
+          <div className="mt-[20px] flex flex-col p-4 bg-white border-2 border-[#DCDCDC] rounded-[10px]">
+            <p className="font-epilogue font-medium text-[20px] leading-[30px] text-center text-gray-600">
               Fund the campaign
             </p>
             <div className="mt-[30px]">
@@ -200,15 +200,15 @@ const CampaignDetails = () => {
                 type="number"
                 placeholder="ETH 0.1"
                 step="0.01"
-                className="w-full py-[10px] sm:px-[20px] px-[15px] outline-none border-[1px] border-[#3a3a43] bg-transparent font-epilogue text-white text-[18px] leading-[30px] placeholder:text-[#4b5264] rounded-[10px]"
+                className="w-full py-[10px] sm:px-[20px] px-[15px] outline-none border-[1px] border-[#DCDCDC] bg-[#F3F2EC] focus:border-[#1E93AB] font-epilogue text-gray-800 text-[18px] leading-[30px] placeholder:text-gray-500 rounded-[10px] transition-colors duration-300"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
               />
-              <div className="my-[20px] p-4 bg-[#13131a] rounded-[10px]">
-                <h4 className="font-epilogue font-semibold text-[14px] leading-[22px] text-white">
+              <div className="my-[20px] p-4 bg-[#F3F2EC] rounded-[10px] border border-[#DCDCDC]">
+                <h4 className="font-epilogue font-semibold text-[14px] leading-[22px] text-gray-800">
                   Back it because you believe in it.
                 </h4>
-                <p className="mt-[20px] font-epilogue font-normal leading-[22px] text-[#808191]">
+                <p className="mt-[20px] font-epilogue font-normal leading-[22px] text-gray-600">
                   Support the project for no reward, just because it speaks to you.
                 </p>
               </div>
@@ -216,7 +216,7 @@ const CampaignDetails = () => {
               <CustomButton
                 btnType="button"
                 title="Fund Campaign"
-                styles="w-full bg-[#8c6dfd]"
+                styles="w-full bg-[#1E93AB] hover:bg-[#176a82]"
                 handleClick={handleDonate}
               />
             </div>
