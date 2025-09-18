@@ -10,7 +10,7 @@ export const StateContextProvider = ({ children }) => {
 
   const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:7545");
   const signer = new ethers.Wallet(
-    "0x402bb2de6b6e086a9ce34abe5d9306edf443ba5b77f8ac79474666f34664fed3",
+    "0x3082ac546e9acfd12dc94b642df2cc5c3900c505f716c68cdf311abbf6082227",
     provider
   );
 
