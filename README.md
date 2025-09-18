@@ -5,6 +5,32 @@
 [![React](https://img.shields.io/badge/React-18.2.0-blue)](https://reactjs.org/)
 [![Solidity](https://img.shields.io/badge/Solidity-^0.8.19-green)](https://soliditylang.org/)
 
+## 📸 Platform Overview
+
+<div align="center">
+
+### Landing Page
+![Landing Page](client/src/assets/LandingPage.png)
+
+### Platform Features
+![Landing Page 2](client/src/assets/Landingpage2.png)
+
+### Create Campaign
+![Start Campaign](client/src/assets/StartCompaign.png)
+
+### Browse Campaigns
+![All Campaigns](client/src/assets/AllCompaigns.png)
+
+### Fund Campaign
+![Fund Campaign](client/src/assets/FundCompaign.png)
+
+### Withdrawal Management
+![All Withdrawals](client/src/assets/AllWithdrawls.png)
+
+</div>
+
+---
+
 A modern, transparent, and secure blockchain-based crowdfunding platform specifically designed for NIT Kurukshetra students. This decentralized application enables students to create fundraising campaigns for educational expenses, medical emergencies, and academic projects while ensuring complete transparency through blockchain technology.
 
 ## 🌟 Features
@@ -262,22 +288,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Team
 
-- **Developer**: [Akshit Singh](https://github.com/akshit3031)
+- **Developer**: [Akshit Garg](https://github.com/akshit3031)
 - **Institution**: National Institute of Technology, Kurukshetra
 - **Project Type**: Blockchain Development
 
-## 📞 Contact
 
-- **GitHub**: [@akshit3031](https://github.com/akshit3031)
-- **Email**: [your-email@nitkkr.ac.in](mailto:your-email@nitkkr.ac.in)
-- **LinkedIn**: [Your LinkedIn Profile](https://linkedin.com/in/your-profile)
-
-## 🙏 Acknowledgments
-
-- NIT Kurukshetra for institutional support
-- OpenZeppelin for secure smart contract libraries
-- Ethereum community for blockchain infrastructure
-- React team for amazing frontend framework
 
 ---
 
