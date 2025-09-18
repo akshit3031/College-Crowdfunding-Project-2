@@ -1,6 +1,10 @@
 # 🎓 NIT Kurukshetra - Blockchain Crowdfunding Platform
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-blue)](https://your-vercel-url.vercel.app)
+[![Live Demo](https://img.shield- Intuitive user experience
+
+## 🛠️ Technology Stack
+
+### **Frontend**dge/Live-Demo-blue)](https://your-vercel-url.vercel.app)
 [![GitHub](https://img.shields.io/github/license/akshit3031/College-Crowdfunding-Project-2)](https://github.com/akshit3031/College-Crowdfunding-Project-2)
 [![React](https://img.shields.io/badge/React-18.2.0-blue)](https://reactjs.org/)
 [![Solidity](https://img.shields.io/badge/Solidity-^0.8.19-green)](https://soliditylang.org/)
@@ -65,31 +69,6 @@ A modern, transparent, and secure blockchain-based crowdfunding platform specifi
 - Professional institutional styling
 - Intuitive user experience
 
-## � Application Screenshots
-
-### 1. Landing Page
-![Landing Page](client/src/assets/LandingPage.png)
-*Welcome page introducing the NIT Kurukshetra Crowdfunding Platform*
-
-### 2. Landing Page - Features
-![Landing Page 2](client/src/assets/Landingpage2.png)
-*Detailed features and benefits of the platform*
-
-### 3. Start Campaign
-![Start Campaign](client/src/assets/StartCompaign.png)
-*Create new fundraising campaigns with detailed information*
-
-### 4. All Campaigns
-![All Campaigns](client/src/assets/AllCompaigns.png)
-*Browse and discover all active fundraising campaigns*
-
-### 5. Fund Campaign
-![Fund Campaign](client/src/assets/FundCompaign.png)
-*Campaign details and donation interface*
-
-### 6. All Withdrawals
-![All Withdrawals](client/src/assets/AllWithdrawls.png)
-*Teacher dashboard for managing withdrawal requests*
 
 ## �🛠️ Technology Stack
 
