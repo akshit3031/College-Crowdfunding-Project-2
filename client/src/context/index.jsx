@@ -10,12 +10,12 @@ export const StateContextProvider = ({ children }) => {
 
   const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:7545");
   const signer = new ethers.Wallet(
-    "0x3082ac546e9acfd12dc94b642df2cc5c3900c505f716c68cdf311abbf6082227",
+    "0x6cf33ce29da6e45fe426068d9b232075cf32d7c0216fd22b578f0a2bb8838531",
     provider
   );
 
   const factoryContract = new ethers.Contract(
-    "0xEff8C79A37C0c577f80E4CA9d596bdA738eb29FE",
+    "0xD308028C9B94bb6f1439B081bFf643126d28b901",
     CollegeCampaignFactoryABI.abi,
     signer
   );
