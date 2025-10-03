@@ -129,3 +129,4 @@ deployments/
 build/
 
 client/yarn.lock
+yarn.lock
