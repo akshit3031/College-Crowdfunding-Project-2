@@ -124,3 +124,6 @@ deployments/
 # Temporary files
 *.tmp
 *.temp
+
+*/build/contracts/
+build/
