@@ -15,7 +15,7 @@ export const StateContextProvider = ({ children }) => {
   );
 
   const factoryContract = new ethers.Contract(
-    "0xDa1283066A41E0F986b8b4CFd58D5b6C9b0c6fb6",
+    "0x113BCfA22a94BF693dcd7C1F8D793B188761adc8",
     CollegeCampaignFactoryABI.abi,
     signer
   );
