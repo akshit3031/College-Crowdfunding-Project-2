@@ -127,3 +127,5 @@ deployments/
 
 */build/contracts/
 build/
+
+client/yarn.lock
