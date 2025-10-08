@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { ethers } from "ethers";
 import CollegeCampaignFactoryABI from "../abi/CollegeCampaignFactory.json";
 import CollegeCampaignABI from "../abi/CollegeCampaign.json";
@@ -6,87 +6,101 @@ import CollegeCampaignABI from "../abi/CollegeCampaign.json";
 const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
-  const [campaigns, setCampaigns] = useState([]); // ← store campaigns
+  const [campaigns, setCampaigns] = useState([]);
+  const [address, setAddress] = useState(null);
+  const [provider, setProvider] = useState(null);
+  const [signer, setSigner] = useState(null);
+  const [factoryContract, setFactoryContract] = useState(null);
 
-  const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:7545");
-  const signer = new ethers.Wallet(
-    "0x6cf33ce29da6e45fe426068d9b232075cf32d7c0216fd22b578f0a2bb8838531",
-    provider
-  );
+  // Initialize MetaMask connection
+  const connectWallet = async () => {
+    if (window.ethereum) {
+      try {
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        const account = accounts[0];
+        setAddress(account);
 
-  const factoryContract = new ethers.Contract(
-    "0xD308028C9B94bb6f1439B081bFf643126d28b901",
-    CollegeCampaignFactoryABI.abi,
-    signer
-  );
+        const prov = new ethers.providers.Web3Provider(window.ethereum);
+        setProvider(prov);
 
-  const createCampaign = async (form) => {
-    try {
-      const nonce = await provider.getTransactionCount(signer.address);
-      if (!form.minimumContribution || !form.targetAmount) {
-        throw new Error("Minimum contribution or target amount missing");
+        const sign = prov.getSigner();
+        setSigner(sign);
+
+        const factory = new ethers.Contract(
+          import.meta.env.VITE_FACTORY_ADDRESS,
+          CollegeCampaignFactoryABI.abi,
+          sign
+        );
+        setFactoryContract(factory);
+
+      } catch (err) {
+        console.error("Wallet connection failed:", err);
       }
-
-      const tx = await factoryContract.createCampaign(
-        ethers.utils.parseEther(form.minimumContribution.toString()),
-        form.title,
-        form.description,
-        form.image,
-        ethers.utils.parseEther(form.targetAmount.toString()),
-        form.studentRoll,
-        { nonce }
-      );
-
-      await tx.wait();
-      console.log("Campaign created:", tx.hash);
-
-      // After creation, fetch all campaigns again
-      await fetchCampaigns();
-    } catch (error) {
-      console.error("Failed to create campaign:", error);
+    } else {
+      alert("Please install MetaMask!");
     }
   };
 
-
+  // Fetch campaigns
   const fetchCampaigns = async () => {
+    if (!factoryContract || !signer) return [];
     try {
       const addresses = await factoryContract.getDeployedCampaigns();
       const data = await Promise.all(
         addresses.map(async (address) => {
-          const campaignContract = new ethers.Contract(
-            address,
-            CollegeCampaignABI.abi,
-            signer
-          );
+          const campaignContract = new ethers.Contract(address, CollegeCampaignABI.abi, signer);
           const summary = await campaignContract.getSummary();
           const studentRollNumber = await campaignContract.studentRollNumber();
           return {
             address,
-            minimumContribution: ethers.utils.formatEther(summary[0].toString()),
-            balance: ethers.utils.formatEther(summary[1].toString()),
+            minimumContribution: ethers.utils.formatEther(summary[0]),
+            balance: ethers.utils.formatEther(summary[1]),
             requestsCount: summary[2].toNumber(),
             student: summary[3],
             title: summary[4],
             description: summary[5],
             image: summary[6],
-            targetAmount: ethers.utils.formatEther(summary[7].toString()),
+            targetAmount: ethers.utils.formatEther(summary[7]),
             studentRoll: studentRollNumber,
           };
         })
       );
       setCampaigns(data);
       return data;
-    } catch (error) {
-      console.error("Failed to fetch campaigns:", error);
+    } catch (err) {
+      console.error("Failed to fetch campaigns:", err);
       return [];
     }
   };
 
-  // Get campaigns started by the current user
+  // Create campaign (user connected via MetaMask)
+  const createCampaign = async (form) => {
+    if (!factoryContract) return;
+    try {
+      const tx = await factoryContract.createCampaign(
+        ethers.utils.parseEther(form.minimumContribution.toString()),
+        form.title,
+        form.description,
+        form.image,
+        ethers.utils.parseEther(form.targetAmount.toString()),
+        form.studentRoll
+      );
+      await tx.wait();
+      await fetchCampaigns();
+    } catch (err) {
+      console.error("Failed to create campaign:", err);
+    }
+  };
+
+  // Example: get user campaigns
   const getUserCampaigns = async () => {
     const allCampaigns = await fetchCampaigns();
-    return allCampaigns.filter((c) => c.student.toLowerCase() === signer.address.toLowerCase());
+    return allCampaigns.filter((c) => c.student.toLowerCase() === address.toLowerCase());
   };
+
+  useEffect(() => {
+    connectWallet();
+  }, []);
 
   // Check if current user is a teacher
   const isTeacher = async () => {
@@ -250,7 +264,7 @@ export const StateContextProvider = ({ children }) => {
   return (
     <StateContext.Provider
       value={{
-        address: signer.address,
+        address,
         factoryContract,
         createCampaign,
         campaigns,
