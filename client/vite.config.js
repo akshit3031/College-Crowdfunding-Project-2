@@ -1,26 +1,48 @@
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
+import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill';
 
-import react from "@vitejs/plugin-react"
-import { defineConfig } from "vite"
-import stdLibBrowser from "vite-plugin-node-stdlib-browser"
-
+// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), stdLibBrowser()],
+  plugins: [react()],
   define: {
     global: "globalThis",
     "process.env": {},
   },
-  resolve: {
-    alias: {
-      process: "process/browser",
-      buffer: "buffer",
-    },
+  build: {
+    target: ["esnext"], // ✅ allow BigInt in build
+    rollupOptions: {
+      external: [
+        "@safe-globalThis/safe-ethers-adapters",
+        "@safe-globalThis/safe-core-sdk", 
+        "@safe-globalThis/safe-service-client",
+        "@safe-globalThis/safe-ethers-lib"
+      ]
+    }
   },
   optimizeDeps: {
     esbuildOptions: {
-      target: "esnext", // ✅ allow BigInt in dev
+      target: "esnext", // ✅ allow BigInt in dev mode too
+      plugins: [
+        NodeGlobalsPolyfillPlugin({
+          process: true,
+          buffer: true,
+        }),
+        NodeModulesPolyfillPlugin(),
+      ],
     },
+    include: [
+      "@thirdweb-dev/react",
+      "@thirdweb-dev/sdk", 
+      "ethers"
+    ]
   },
-  build: {
-    target: "esnext", // ✅ allow BigInt in build
-  },
-})
+  resolve: {
+    alias: {
+      // Handle Node.js modules in browser
+      stream: "stream-browserify",
+      util: "util"
+    }
+  }
+});

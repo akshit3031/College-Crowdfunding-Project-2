@@ -8,17 +8,14 @@
     "preview": "vite preview",
     "deploy": "yarn build && npx thirdweb@3.7.4 upload dist"
   },
-  "dependencies": {
+    "dependencies": {
     "@thirdweb-dev/contracts-js": "^1.3.23",
     "@thirdweb-dev/react": "^4.9.4",
     "@thirdweb-dev/sdk": "^4.0.99",
-    "buffer": "^6.0.3",
     "ethers": "^5.8.0",
-    "process": "^0.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.4.4",
-    "vite-plugin-node-stdlib-browser": "^0.2.1"
+    "react-router-dom": "^6.4.4"
   },
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
@@ -30,8 +27,5 @@
     "tailwindcss": "^3.2.4",
     "util": "^0.12.5",
     "vite": "^4.5.14"
-  },
-  "engines": {
-    "node": "22.x"
   }
 }
