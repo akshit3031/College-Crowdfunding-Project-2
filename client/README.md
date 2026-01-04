@@ -10,7 +10,7 @@ A decentralized crowdfunding platform built specifically for NIT Kurukshetra stu
 - **0% Platform Fees**: Students receive 100% of raised funds
 - **Responsive Design**: Optimized for mobile and desktop devices
 - **MetaMask Integration**: Secure wallet connectivity
-- **Real-time Tracking**: Live campaign progress and statistics
+
 
 ## Getting Started
 
